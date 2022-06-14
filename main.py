@@ -3,25 +3,49 @@ import requests
 
 
 def get_info():
-    url = 'https://old.rusbonds.ru/compare.asp'
-    bond = 'BCS Structured-33-2025-ев'
-    # page = requests.get(f'{url}?go=1&tool={bond}')
+    site = 'https://old.rusbonds.ru'
+    url_bonds = '/compare.asp'
+    url = f'{site}{url_bonds}'
+    column_names = [
+        'Облигация, выпуск',
+        'Дата погаш.',
+        'Дата оферты.',
+        'Дюрац. дней',
+        'Купон р/год',
+        'Купон % год',
+        'Купон НКД',
+        'Цена, % ном. чист.',
+        'Цена, % ном. изм.',
+        'Цена, % ном. грязн.',
+        'Дох-ть эфф., % год. погаш.',
+        'Дох-ть эфф., % год. изм.',
+        'Дох-ть эфф., % год. оферт.',
+        'Торги за неделю сдел.',
+        'Торги за неделю объем, млн.',
+        'В обращении, млн.',
+        'Коэф. оборач. х 100%'
+    ]
+    # bond = 'BCS Structured-33-2025-ев'
     page = requests.get(url)
     page.encoding = 'windows-1251'
 
     soup = BeautifulSoup(page.text, "lxml")
 
-    # tables = soup.find('table', {'class': 'tbl_data.tbl_headgrid'})
     tables = soup.find(class_='tbl_data tbl_headgrid')
     result = []
     for table in tables:
-        result += [{table.text: table.next_element.text}]
-    print(result)
+        lines = table.find_all('tr')
+        for line in lines:
+            # print(len(line))
+            s = line.text
+            # print(len(s))
+            if not s.startswith('Облигация') and not s.startswith('р/год') and not s.startswith('* - сделки сегодня'):
+                print(line.extract().text)
 
-    # tables = soup.findAll('tbody')
-    # for table in tables:
-    #     print(table.fetchParents)
-    #     print()
+
+
+    # print(result)
+
 
 
     # links = (soup.findAll(class_='bl'))
@@ -30,10 +54,6 @@ def get_info():
     #     print(f'{link.text}: {l}')
     # field = soup.find('input', {'class': 'gsm', 'onchange': 'document.frm1.emit.selectedIndex=0'})
     # btn = soup.find('input', {'class': 'btc', 'value': '   найти   '})
-    # print(field)
-    # print(btn)
-    # soup2 = BeautifulSoup(field.get(bond), 'lxml')
-    # print(soup2)
 
 
 # Press the green button in the gutter to run the script.
