@@ -37,14 +37,17 @@ def get_info():
         lines = table.find_all('tr')
         for line in lines:
             # print(len(line))
-            s = line.text
-            # print(len(s))
-            if not s.startswith('Облигация') and not s.startswith('р/год') and not s.startswith('* - сделки сегодня'):
-                print(line.extract().text)
+            columns = line.find_all('td')
+            for column in columns:
+                s = line.text
+                # print(len(s))
+                if not s.startswith('Облигация') and not s.startswith('р/год') and not s.startswith('* - сделки сегодня'):
+                    # print(line.extract().text)
+                    result.append(column.text.replace('\xa0', '').strip())
 
 
 
-    # print(result)
+    print(result)
 
 
 
