@@ -2,7 +2,19 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def get_info():
+def proxy():
+    url = "http://icanhazip.com"
+    proxy_host = "proxy.crawlera.com"
+    proxy_port = "8010"
+    proxy_auth = "<APIKEY>:"
+    proxies = {
+        "https": f"https://{proxy_auth}@{proxy_host}:{proxy_port}/",
+        "http": f"http://{proxy_auth}@{proxy_host}:{proxy_port}/"
+    }
+    r = requests.get(url, proxies=proxies, verify=False)
+
+
+def get_table_from_page():
     site = 'https://old.rusbonds.ru'
     url_bonds = '/compare.asp'
     url = f'{site}{url_bonds}'
@@ -91,6 +103,6 @@ def get_info():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    get_info()
+    get_table_from_page()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
